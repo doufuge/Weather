@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="splash_title">Weather Chart</string>
+    <string name="no_permission_tip">Permission denied, location cannot be obtained</string>
+    <string name="permission_request_tip">Please turn on GPS or network location</string>
+    <string name="table_cell_title_1">Hour</string>
+    <string name="table_cell_title_2">Temperature (°C)</string>
+</resources>

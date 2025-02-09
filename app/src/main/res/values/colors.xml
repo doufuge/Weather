@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="title">#323232</color>
+    <color name="table_title">#D5D5D5</color>
+    <color name="pop_bg">#FFFFF2</color>
+    <color name="page_bg">#F2F2F2</color>
+</resources>

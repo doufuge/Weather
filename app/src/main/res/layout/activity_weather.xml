@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".screen.weather.WeatherActivity">
+
+    <data>
+        <variable name="densityUtil" type="com.johny.weather.utils.DensityUtil" />
+        <variable name="view" type="android.view.View" />
+        <variable name="vm" type="com.johny.weather.screen.weather.WeatherViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/page_bg"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Top Blank -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_height="@{densityUtil.statusBarHeight}"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="8dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/title"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Title" />
+
+                <ImageView
+                    android:id="@+id/btn_reload"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:onClick="@{() -> vm.reload()}"
+                    app:tint="@color/title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_view_mode"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_reload"
+                    app:visibility="@{vm.loading ? view.GONE : view.VISIBLE}"
+                    tools:srcCompat="@drawable/ic_reload" />
+
+                <ImageView
+                    android:id="@+id/btn_view_mode"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:onClick="@{() -> vm.toggleViewMode()}"
+                    app:tint="@color/title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_list_chart"
+                    app:visibility="@{vm.loading ? view.GONE : view.VISIBLE}"
+                    tools:srcCompat="@drawable/ic_list_chart" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <com.johny.weather.screen.weather.LineChartView
+            android:id="@+id/line_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:weatherData="@{vm.weatherData}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_bar" />
+
+        <LinearLayout
+            android:id="@+id/table_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_bar">
+            <LinearLayout
+                android:id="@+id/cell_header"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:background="#717171"
+                app:layout_constraintTop_toBottomOf="@+id/top_bar">
+
+                <TextView
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/table_cell_title_1"
+                    android:textSize="14sp"
+                    android:textColor="@color/table_title"
+                    android:textStyle="bold"
+                    tools:text="hour" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#CCC" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="12dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/table_title"
+                    android:text="@string/table_cell_title_2"
+                    tools:text="temp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:weatherData="@{vm.weatherData}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tip_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#F0A936"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/top_bar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#323232"
+                android:textSize="14sp"
+                android:text="@{vm.tip}"
+                tools:text="tip"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/loading_view"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:background="@drawable/bg_loading_hud"
+            app:visibility="@{vm.loading ? view.VISIBLE : view.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/anim_view"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/hud" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
